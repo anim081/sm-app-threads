@@ -5,6 +5,8 @@ import { useForm } from "react-hook-form";
 import { useOrganization } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { usePathname, useRouter } from "next/navigation";
+import { useUploadThing } from "@/lib/uploadthing";
+import AddIcon from "@mui/icons-material/Add";
 
 import {
   Form,
@@ -64,7 +66,7 @@ function PostThread({ userId }: Props) {
                 Content
               </FormLabel>
               <FormControl className="no-focus border border-dark-4 bg-dark-3 text-light-1">
-                <Textarea rows={15} {...field} />
+                <Textarea rows={5} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
