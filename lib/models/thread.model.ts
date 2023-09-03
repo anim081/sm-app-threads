@@ -14,9 +14,6 @@ const threadSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Community",
   },
-  postImage: {
-    type: String,
-  },
   createdAt: {
     type: Date,
     default: Date.now,

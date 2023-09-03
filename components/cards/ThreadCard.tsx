@@ -14,7 +14,6 @@ interface Props {
     image: string;
     id: string;
   };
-  postImage: string;
   community: {
     id: string;
     name: string;
@@ -35,7 +34,6 @@ function ThreadCard({
   parentId,
   content,
   author,
-  postImage,
   community,
   createdAt,
   comments,
@@ -70,7 +68,6 @@ function ThreadCard({
             </Link>
 
             <p className="mt-2 text-small-regular text-light-2">{content}</p>
-            <Image src={postImage} width={200} height={200} alt="postImage" />
 
             <div className={`${isComment && "mb-10"} mt-5 flex flex-col gap-3`}>
               <div className="flex gap-3.5">

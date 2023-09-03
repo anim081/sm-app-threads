@@ -53,14 +53,12 @@ interface Params {
   author: string;
   communityId: string | null;
   path: string;
-  postImage: string | null;
 }
 
 export async function createThread({
   text,
   author,
   communityId,
-  postImage,
   path,
 }: Params) {
   try {
@@ -75,7 +73,6 @@ export async function createThread({
       text,
       author,
       community: communityIdObject,
-      postImage: postImage, // Store the postImage URL in the image field
     });
 
     // Update User model
