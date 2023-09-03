@@ -26,7 +26,7 @@ async function page({ params }: { params: { id: string } }) {
         <ThreadCard
           id={thread._id}
           currentUserId={user.id}
-          postImage={thread.image}
+          postImage={thread}
           parentId={thread.parentId}
           content={thread.text}
           author={thread.author}
