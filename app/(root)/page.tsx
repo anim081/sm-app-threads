@@ -36,6 +36,7 @@ async function Home({
             {result.posts.map((post) => (
               <ThreadCard
                 key={post._id}
+                postImage={post.image}
                 id={post._id}
                 currentUserId={user.id}
                 parentId={post.parentId}
