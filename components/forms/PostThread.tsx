@@ -26,10 +26,9 @@ import { isBase64Image } from "@/lib/utils";
 
 interface Props {
   userId: string;
-  postImage: string;
 }
 
-function PostThread({ userId, postImage }: Props) {
+function PostThread({ userId }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const { startUpload } = useUploadThing("media");
