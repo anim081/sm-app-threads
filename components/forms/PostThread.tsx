@@ -26,9 +26,10 @@ import { isBase64Image } from "@/lib/utils";
 
 interface Props {
   userId: string;
+  postImage: string;
 }
 
-function PostThread({ userId }: Props) {
+function PostThread({ userId, postImage }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const { startUpload } = useUploadThing("media");
@@ -46,16 +47,57 @@ function PostThread({ userId }: Props) {
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof ThreadValidation>) => {
-    // Create the thread with the updated image URL
-    await createThread({
-      text: values.thread,
-      author: userId,
-      communityId: organization ? organization.id : null,
-      path: pathname,
-    });
+  const handleImage = (
+    e: ChangeEvent<HTMLInputElement>,
+    fieldChange: (value: string | null) => void
+  ) => {
+    e.preventDefault();
 
-    router.push("/");
+    const fileReader = new FileReader();
+
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
+      setFiles(Array.from(e.target.files));
+
+      if (!file.type.includes("image")) return;
+
+      fileReader.onload = (event) => {
+        const imageDataUrl = event.target?.result?.toString() || "";
+        fieldChange(imageDataUrl);
+      };
+
+      fileReader.readAsDataURL(file);
+    }
+  };
+
+  const onSubmit = async (values: z.infer<typeof ThreadValidation>) => {
+    try {
+      // Check if the image has changed
+      const hasImageChanged = uploadedImage;
+
+      // If the image has changed, upload it
+      if (hasImageChanged) {
+        const imgRes = await startUpload(files);
+
+        if (imgRes && imgRes[0].fileUrl) {
+          setUploadedImage(imgRes[0].fileUrl);
+        }
+      }
+
+      // Create the thread with the updated image URL
+      await createThread({
+        text: values.thread,
+        author: userId,
+        communityId: organization ? organization.id : null,
+        path: pathname,
+        postImage: uploadedImage,
+      });
+      console.log(createThread);
+
+      router.push("/");
+    } catch (error) {
+      console.error("Error creating thread:", error);
+    }
   };
 
   return (
@@ -79,6 +121,16 @@ function PostThread({ userId }: Props) {
             </FormItem>
           )}
         />
+        <div className="flex w-full flex-col gap-3">
+          <FormLabel className="text-base-semibold text-light-2">
+            Image
+          </FormLabel>
+          <input
+            type="file"
+            onChange={(e) => handleImage(e, setUploadedImage)}
+          />
+          {uploadedImage && <img src={uploadedImage} alt="Uploaded" />}
+        </div>
         <Button
           type="submit"
           className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"
