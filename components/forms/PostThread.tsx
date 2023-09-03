@@ -26,7 +26,6 @@ import { isBase64Image } from "@/lib/utils";
 
 interface Props {
   userId: string;
-  postImage: string;
 }
 
 function PostThread({ userId }: Props) {
